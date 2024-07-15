@@ -33,8 +33,11 @@ function oldScrabbleScorer(word) {
 // don't change the names or your program won't work as expected. //
 
 function initialPrompt() {
-   console.log("Let's play some scrabble! Enter a word:");
-};
+   console.log("Let's play some scrabble! \n");
+   let newWord = input.question("Please enter a word:");
+   console.log(oldScrabbleScorer(newWord));
+}
+
 
 let newPointStructure;
 
