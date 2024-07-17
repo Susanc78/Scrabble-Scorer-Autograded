@@ -64,30 +64,35 @@ function vowelBonusScorer(word) {
    }return score;       //returns total score
 }
 
-let scrabbleScorer;
-
-
-const scoringAlgorithms = [];
-
-let simpleScore = {
-   name: "Simple Score",
-   description: "Each character is worth 1 point",
-   scoreFunction: simpleScorer
+//let scrabbleScorer;
+function scrabbleScorer(word) {
+   let letterPoints = 0;
+   word = word.toUpperCase();
+   for (let i = 0; i < word.length; i++) {
+      letterPoints += newPointStructure[word[i].toLowerCase()];
+      } 
+      return letterPoints;
 };
 
-let bonusVowels = {
-   name: "Bonus Vowels",
-   description: "Each vowel is worth 3 points",
-   scoreFunction: vowelBonusScorer
-};
+const scoringAlgorithms = [
+   {
+      name: 'Simple Score',
+      description: 'Each character is worth 1 point',
+      scorerFunction: simpleScorer
+   },
+   {
+      name: 'Bonus Vowels',
+      description: 'Each vowel is worth 3 points',
+      scorerFunction: vowelBonusScorer
+   },
+   {
+      name:'Scrabble Scoring',
+      description: 'Traditional Scrabble score method',
+      scorerFunction: scrabbleScorer
+   },
+];
 
-let scrabbleScore = {
-   name: "Scrabble Scoring",
-   description: "Traditional Scrabble score method",
-   scoreFunction: oldScrabbleScorer
-};
-
-scoringAlgorithms.push(simpleScore, bonusVowels, scrabbleScore);
+console.log(scoringAlgorithms);
 
 function scorerPrompt() {
    console.log("Which scoring system would you like to use? \n");
@@ -104,13 +109,28 @@ function scorerPrompt() {
 }
 
 
-function transform() {};
+function transform(oldPointStructure) {
+   let newPointStructure = {}       //empty object to store key/value pairs
+   for (const pointValue in oldPointStructure) {
+      //console.log(`${pointValue}: ${oldPointStructure[pointValue]}`);
+      // what is the key and value of oldpoint structure? key is number, value array of letters
+      // how do you get a value from an object? bracket or dot notation
+      // how do you iterate over an array? for..of
+      for (const letterPoints of oldPointStructure[pointValue]) {
+         //console.log(`${pointValue}: ${letter}`);
+         newPointStructure[letterPoints.toLowerCase()] = Number(pointValue);  //need to make sure key is lower case and values are numbers, not strings
+      }
+   }
+   return newPointStructure;
+}
+newPointStructure = transform(oldPointStructure);
 
 function runProgram() {
    const word = initialPrompt();
    const selection = scorerPrompt();
    const score = selection.scoreFunction(word);
    console.log(`Score for '${word}': ${score}`);   //added these const because I couldn't figure out any other way to print the score to the console
+   //transform(oldPointStructure);
 }
 
 // Don't write any code below this line //
